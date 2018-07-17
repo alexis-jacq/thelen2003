@@ -137,12 +137,12 @@ def d_activation(a, u):
 
 class Muscle():
 
-    def __init__(lm):
+    def __init__(sim):
         ''' input is the initial muscle lenght
-        for mujoco, this is given by sim.data.ctrl
+        for mujoco, this is given by sim.data.actuator_length
         '''
-        self.a = 0
-        self.lm = lm
+        self.a = sim.data.actuator_length
+        self.lm = sim.data.actuator_length
         self.lt = lmt0 - self.lm
         self.vm = 0
 
@@ -153,10 +153,10 @@ class Muscle():
         self.ft = length_tendon_force(self.lt)
         self.fce_t = self.ft - self.fpe
 
-    def update(u):
+    def update(self, u):
         ''' update all muscle features from an excitation u
         the main output is the new lm,
-        for mujoco, it updates sim.data.ctrl
+        for mujoco, u = sim.data.ctrl
         '''
         self.update_forces()
         # velocity:
